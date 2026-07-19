@@ -1,170 +1,67 @@
-# Multi-Agent AI Data Lakehouse Platform for Betting Site Data Intelligence
+# Aether.fi - Web3 Portfolio Analytics & dApp Platform
 
-Production-oriented clean architecture scaffold for collecting, streaming, storing, analyzing, and explaining betting platform intelligence.
+A sleek, high-fidelity portfolio tracking, DEX swap simulator, yield optimization playground, and conversational AI wallet advisor built with FastAPI and React.
 
-## Architecture Review
+---
 
-The repository was effectively empty except for Git metadata and `.gitkeep`, so this implementation establishes the missing product baseline while preserving the current branch history. The architecture separates frontend, backend, data collection, streaming, lakehouse, Spark, ML, RAG, agents, monitoring, infrastructure, tests, and documentation.
+## 🚀 Key Features
 
-## Missing Features Report
+* **Real-time Portfolio Tracker**: Live simulated token prices (ETH, SOL, LINK, UNI) with price tickers, allocation metrics, and historical net worth trends.
+* **DEX Swap Simulator**: Custom swap widget with slippage tolerance configurations, live gas price calculation, and mock transaction executions.
+* **DeFi Yield Staking playground**: Dynamic compound interest calculator driven by interactive sliders for principal amount, APY %, and duration.
+* **NFT Collectibles Gallery**: Premium grid of digital collectibles with zoom-on-hover card animations and rarity tags.
+* **Aether AI Analyst Oracle**: Real-time AI wallet analyst chatbot assisting users with gas optimization, yield opportunities, and risk assessment.
+* **Ethereum Gas Index**: Live system gas congestion indicator.
 
-All requested PDF modules were absent in the starting tree: FastAPI, React/Vite/TypeScript, PostgreSQL schema, Scrapy, Playwright, Kafka, Flink, MinIO/Iceberg/Nessie compose services, Spark, ML, FAISS, RAG, CrewAI-style orchestration, dashboards, reports, monitoring, deployment, and tests.
+---
 
-## Improvement Plan
-
-1. Replace in-memory repositories with async SQLAlchemy repositories.
-2. Add Alembic migrations and seeded reference data.
-3. Wire Kafka/Flink/Spark jobs to object storage bronze/silver/gold tables.
-4. Add authenticated dashboard workflows and role-based API guards.
-5. Train, register, and deploy MLflow models.
-6. Harden scraper compliance with per-site allowlists, robots checks, and rate profiles.
-
-## Technical Debt Report
-
-This milestone intentionally creates thin but working boundaries for every subsystem. Remaining debt is integration depth: production credentials, real source adapters, Alembic revision history, browser E2E tests, and deployed observability dashboards.
-
-## Folder Structure
-
-```text
-backend/          FastAPI, domain, services, repositories, schemas, database schema
-frontend/         React TypeScript Vite dashboard shell
- data_collection/ Scrapy spiders and Playwright dynamic collector
-streaming/        Kafka topic constants and Flink job boundary
-lakehouse/        MinIO/Iceberg/Nessie integration area
-spark/            PySpark batch job area
-ml/               Scikit-learn pipelines and MLflow registry area
-rag/              Sentence Transformers + FAISS semantic retrieval
-agents/           Async multi-agent orchestration
-monitoring/       Prometheus/Grafana config
-infra/            Deployment and Docker extension area
-docs/             Architecture diagrams and guides
-tests/            Unit and API tests
-```
-
-## Architecture Diagram
+## 🛠️ Architecture
 
 ```mermaid
-flowchart LR
-  UI[React Dashboard] --> API[FastAPI Controllers]
-  API --> SVC[Service Layer]
-  SVC --> REPO[Repository Layer]
-  REPO --> PG[(PostgreSQL + pgvector)]
-  Scrapy --> Kafka[(Kafka Raw Topic)]
-  Playwright --> Kafka
-  Kafka --> Flink[Flink Validation/Enrichment]
-  Flink --> Lake[(MinIO + Iceberg + Nessie)]
-  Lake --> Spark[Spark ETL]
-  Spark --> ML[MLflow + sklearn]
-  PG --> RAG[FAISS + LangChain/Ollama]
-  ML --> Agents[CrewAI-style Agents]
-  RAG --> Agents
-  Agents --> Reports[PDF/CSV/Excel/JSON Reports]
-  API --> Prometheus
-  Prometheus --> Grafana
+flowchart TD
+  UI[React Web3 Dashboard] <--> API[FastAPI Web3 mock service]
+  UI --> Wallet[Mock Wallet Connector]
+  UI --> Swap[DEX Swap Simulator]
+  UI --> Yield[Compounding APY Calculator]
+  UI --> AI[AI Agent Wallet Analyst]
+  API --> PriceFeed[Live Token Price Simulator]
 ```
 
-## ER Diagram
+* **Frontend**: React + TypeScript + Vite + custom Vanilla CSS (supporting glassmorphism and animations) + Recharts + Lucide icons.
+* **Backend**: FastAPI (Python 3) serving simulated Web3 JSON feeds and compiled static assets.
 
-```mermaid
-erDiagram
-  platforms ||--o{ reviews : has
-  platforms ||--o{ complaints : has
-  platforms ||--o{ news : has
-  platforms ||--o{ transactions : has
-  payment_methods ||--o{ transactions : used_by
-  platforms ||--o{ trust_scores : scored_by
-  platforms ||--o{ risk_scores : scored_by
-  platforms ||--o{ platform_statistics : summarizes
-  users ||--o{ reports : creates
-```
+---
 
-## Sequence Diagram
+## ⚡ Quickstart
 
-```mermaid
-sequenceDiagram
-  participant Spider
-  participant Kafka
-  participant Flink
-  participant Lakehouse
-  participant Spark
-  participant API
-  participant UI
-  Spider->>Kafka: raw platform events
-  Kafka->>Flink: stream consume
-  Flink->>Lakehouse: clean/enriched records
-  Spark->>Lakehouse: batch feature engineering
-  Spark->>API: analytics tables
-  UI->>API: search/detail/dashboard requests
-  API-->>UI: JSON responses
-```
+### Prerequisite
 
-## Class Diagram
+Make sure you have **Node.js** and **Python 3** installed on your system.
 
-```mermaid
-classDiagram
-  class PlatformRepository { +add(platform) +get(id) +list() +search(query) }
-  class PlatformService { +create_platform(payload) +get_platform(id) +list_platforms() +search_platforms(query) }
-  class AgentOrchestrator { +execute(message) }
-  PlatformService --> PlatformRepository
-```
-
-## Deployment Diagram
-
-```mermaid
-flowchart TB
-  subgraph Docker Compose
-    Postgres
-    Kafka
-    MinIO
-    Nessie
-    Prometheus
-    Grafana
-  end
-  Developer --> API[FastAPI]
-  Developer --> Frontend[Vite]
-  API --> Postgres
-  API --> Kafka
-  Spark --> MinIO
-  Grafana --> Prometheus
-```
-
-## Development
-
+### 1. Build Frontend Static Assets
 ```bash
+cd frontend
+npm install
+npm run build
+cd ..
+```
+
+### 2. Run FastAPI Backend
+```bash
+# Setup Python virtual environment
 python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn backend.app.main:app --reload
-docker compose up -d postgres kafka minio nessie prometheus grafana
-```
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-## मराठी Project Comments
-
-या codebase मधील प्रत्येक मुख्य module मध्ये मराठी टिप्पणी जोडली आहे. त्या comments मध्ये त्या file चे काम, architecture मधील भूमिका आणि पुढील production implementation साठी extension point स्पष्ट केले आहे. संपूर्ण मराठी project explanation `docs/marathi-project-explanation.md` मध्ये उपलब्ध आहे.
-
-## Run the Live Application
-
-The repository now includes a runnable local live application with a FastAPI backend, React dashboard, PostgreSQL/pgvector, Kafka, MinIO, Nessie, Prometheus and Grafana services.
-
-```bash
-cp .env.example .env
-docker compose up --build
-```
-
-Open these URLs after the containers are healthy:
-
-- Frontend dashboard: http://localhost:5173
-- Backend health: http://localhost:8000/health
-- Backend OpenAPI docs: http://localhost:8000/docs
-- Grafana: http://localhost:3000
-- Prometheus: http://localhost:9090
-- MinIO console: http://localhost:9001
-
-For local non-Docker API development:
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
+# Install dependencies
 pip install -r backend/requirements.txt
-uvicorn app.main:app --reload --app-dir backend
+
+# Start Server
+uvicorn app.main:app --app-dir backend --port 8000 --reload
 ```
+
+Open **[http://localhost:8000](http://localhost:8000)** in your browser to view the live dashboard!
+
+---
+
+## 📜 License
+MIT License. Created by [957908](https://github.com/957908).
